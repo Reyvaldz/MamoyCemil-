@@ -1,12 +1,21 @@
 body {
   background-color: #d7b74f;
-  background-image: url(asset/bg.jpg);
-  background-repeat: repeat;
-  background-size: 250px;
-  background-blend-mode: lighten;
   margin: 0;
   padding: 0;
   font-family: 'Nunito', sans-serif;
+  position: relative; /* penting supaya ::before mengikuti body */
+  z-index: 0;
+}
+
+body::before {
+  content: "";
+  position: fixed; /* biar full screen dan tidak ikut scroll */
+  inset: 0;
+  background-image: url(asset/bg.jpg);
+  background-repeat: repeat;
+  background-size: 250px;
+  opacity: 0.3; /* atur opacity di sini */
+  z-index: -1; /* di belakang semua elemen */
 }
 
 .container {
