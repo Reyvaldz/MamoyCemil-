@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Periksa pesanan MamoyCemil sebelum mengirimnya lewat WhatsApp." />
+  <title>Konfirmasi Pesanan – MamoyCemil</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="hero review-hero">
+    <h1>Konfirmasi <span>Pesanan</span></h1>
+    <p>Periksa jumlah, pilihan, dan total sebelum dikirim.</p>
+  </header>
+
+  <main class="wrap review-main">
+    <section aria-labelledby="reviewTitle">
+      <h2 id="reviewTitle">Rincian Pesanan</h2>
+      <div class="empty-review" id="emptyReview" hidden>
+        Pesanan kosong. <a href="index.html#menu">Kembali pilih menu</a>.
+      </div>
+      <div class="review-list" id="reviewItems" aria-live="polite"></div>
+
+      <div id="reviewContent">
+        <div class="review-details">
+          <label for="customerName">Nama <span class="required-mark">* wajib</span>
+            <input id="customerName" type="text" autocomplete="name" autocapitalize="words" placeholder="Nama kamu" required />
+            <small class="field-error" id="customerNameError" hidden>Nama wajib diisi.</small>
+          </label>
+          <label for="customerAddress">Alamat <span class="required-mark">* wajib</span>
+            <input id="customerAddress" type="text" autocomplete="street-address" placeholder="Alamat pengantaran" required />
+            <small class="field-error" id="customerAddressError" hidden>Alamat wajib diisi.</small>
+          </label>
+          <label for="orderNote">Catatan (opsional)
+            <textarea id="orderNote" placeholder="Contoh: patokan rumah atau catatan lainnya"></textarea>
+          </label>
+        </div>
+
+        <div class="review-total" aria-live="polite">
+          <div class="review-total-label">Total pesanan</div>
+          <output class="review-total-value" id="orderTotal">Rp0</output>
+        </div>
+
+        <div class="review-actions">
+          <button class="cancel-order" id="cancelOrder" type="button">Batalkan & pilih lagi</button>
+          <button class="confirm-order" id="confirmOrder" type="button">Pesanan sudah benar</button>
+          <button class="edit-order" id="editOrder" type="button" hidden>Ubah pesanan</button>
+          <button class="send-order" id="sendOrder" type="button" hidden>Kirim ke WhatsApp</button>
+        </div>
+        <p class="review-confirmed" id="confirmedNotice" role="status" hidden>Pesanan sudah dikonfirmasi. Tekan tombol WhatsApp untuk melanjutkan.</p>
+        <p id="reviewMessage" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const menuPrices = {
+      'Beef Burger': { '': 10000 },
+      'Sosis Stick': { '': 1000 },
+      Kebab: { Kecil: 10000, Sedang: 15000 },
+      Corndog: {
+        Sosis: 5000,
+        'Manis coklat': 5000,
+        'Manis strawberry': 5000,
+        'Manis tiramisu': 5000,
+        'Manis matcha': 5000
+      }
+    };
+    const formatRupiah = (amount) => `Rp${amount.toLocaleString('id-ID')}`;
+    const reviewItems = document.querySelector('#reviewItems');
+    const emptyReview = document.querySelector('#emptyReview');
+    const reviewContent = document.querySelector('#reviewContent');
+    const totalOutput = document.querySelector('#orderTotal');
+    const confirmButton = document.querySelector('#confirmOrder');
+    const editButton = document.querySelector('#editOrder');
+    const sendButton = document.querySelector('#sendOrder');
+    const confirmedNotice = document.querySelector('#confirmedNotice');
+    const reviewMessage = document.querySelector('#reviewMessage');
+    const nameInput = document.querySelector('#customerName');
+    const addressInput = document.querySelector('#customerAddress');
+    const noteInput = document.querySelector('#orderNote');
+    let confirmed = false;
+    let canSend = false;
+    let validationAttempted = false;
+    let confirmationTimer;
+    let cart = [];
+    const savedDetails = new URLSearchParams(location.search);
+    nameInput.value = savedDetails.get('customerName') || '';
+    addressInput.value = savedDetails.get('customerAddress') || '';
+    noteInput.value = savedDetails.get('orderNote') || '';
+
+    try {
+      const parsedOrder = JSON.parse(new URLSearchParams(location.search).get('order') || '[]');
+      if (Array.isArray(parsedOrder)) {
+        cart = parsedOrder.flatMap((item) => {
+          const validPrice = menuPrices[item.name]?.[item.variant || ''];
+          const sweetCorndog = item.name === 'Corndog' && item.variant?.startsWith('Manis ');
+          const validSpice = sweetCorndog ? item.spice === '' : ['Pedas', 'Tidak pedas'].includes(item.spice);
+          if (!validPrice || !validSpice) return [];
+          return [{
+            name: item.name,
+            variant: item.variant || '',
+            spice: item.spice,
+            price: validPrice,
+            quantity: Math.max(1, Math.min(99, Number.parseInt(item.quantity, 10) || 1))
+          }];
+        });
+      }
+    } catch {
+      cart = [];
+    }
+
+    function createActionButton(label, action, index, text) {
+      const button = document.createElement('button');
+      button.className = action === 'remove' ? 'remove-line' : 'quantity-button';
+      button.type = 'button';
+      button.dataset.action = action;
+      button.dataset.index = index;
+      button.setAttribute('aria-label', label);
+      button.textContent = text;
+      button.disabled = confirmed;
+      return button;
+    }
+
+    function renderOrder() {
+      reviewItems.replaceChildren();
+      emptyReview.hidden = cart.length > 0;
+      reviewContent.hidden = cart.length === 0;
+      let total = 0;
+
+      cart.forEach((item, index) => {
+        const lineTotal = item.price * item.quantity;
+        total += lineTotal;
+        const row = document.createElement('article');
+        row.className = 'review-line';
+
+        const description = document.createElement('div');
+        const title = document.createElement('h3');
+        title.textContent = `${item.name}${item.variant ? ` - ${item.variant}` : ''}`;
+        const options = document.createElement('p');
+        options.textContent = `${item.spice ? `${item.spice} - ` : ''}${formatRupiah(item.price)} per porsi`;
+        description.append(title, options);
+
+        const quantityControls = document.createElement('div');
+        quantityControls.className = 'review-quantity';
+        quantityControls.append(createActionButton(`Kurangi ${item.name}`, 'decrease', index, '−'));
+        const quantity = document.createElement('output');
+        quantity.className = 'quantity-value';
+        quantity.textContent = item.quantity;
+        quantityControls.append(quantity, createActionButton(`Tambah ${item.name}`, 'increase', index, '+'));
+
+        const lineTotalOutput = document.createElement('strong');
+        lineTotalOutput.className = 'review-line-total';
+        lineTotalOutput.textContent = formatRupiah(lineTotal);
+        row.append(description, quantityControls, lineTotalOutput, createActionButton(`Hapus ${item.name}`, 'remove', index, 'Hapus'));
+        reviewItems.append(row);
+      });
+
+      totalOutput.textContent = formatRupiah(total);
+      confirmButton.disabled = cart.length === 0;
+      sendButton.disabled = !canSend || cart.length === 0;
+      document.querySelectorAll('.review-details input, .review-details textarea').forEach((field) => {
+        field.disabled = confirmed;
+      });
+      confirmButton.hidden = confirmed || cart.length === 0;
+      document.querySelector('#cancelOrder').hidden = confirmed || cart.length === 0;
+      editButton.hidden = !confirmed || cart.length === 0;
+      sendButton.hidden = !confirmed || cart.length === 0;
+      confirmedNotice.hidden = !confirmed || cart.length === 0;
+    }
+
+    reviewItems.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-action]');
+      if (!button || confirmed) return;
+      const index = Number(button.dataset.index);
+      if (button.dataset.action === 'increase') cart[index].quantity += 1;
+      if (button.dataset.action === 'decrease') cart[index].quantity = Math.max(1, cart[index].quantity - 1);
+      if (button.dataset.action === 'remove') cart.splice(index, 1);
+      renderOrder();
+    });
+
+    nameInput.addEventListener('input', () => {
+      nameInput.value = nameInput.value.replace(/[^\p{L}\s]/gu, '');
+      if (validationAttempted) updateRequiredField(nameInput, document.querySelector('#customerNameError'));
+    });
+
+    function updateRequiredField(field, errorMessage, replayShake = false) {
+      const invalid = !field.value.trim();
+      const showError = validationAttempted && invalid;
+      field.setAttribute('aria-invalid', String(showError));
+      errorMessage.hidden = !showError;
+      field.classList.toggle('is-invalid', showError);
+      if (showError && replayShake) {
+        field.classList.remove('is-invalid');
+        void field.offsetWidth;
+        field.classList.add('is-invalid');
+      }
+      return !invalid;
+    }
+
+    function validateRequiredDetails() {
+      validationAttempted = true;
+      nameInput.value = nameInput.value.replace(/\s+/g, ' ').trim();
+      addressInput.value = addressInput.value.trim();
+      const nameIsValid = updateRequiredField(nameInput, document.querySelector('#customerNameError'), true);
+      const addressIsValid = updateRequiredField(addressInput, document.querySelector('#customerAddressError'), true);
+      if (!nameIsValid) nameInput.focus();
+      else if (!addressIsValid) addressInput.focus();
+      return nameIsValid && addressIsValid;
+    }
+
+    addressInput.addEventListener('input', () => {
+      if (validationAttempted) updateRequiredField(addressInput, document.querySelector('#customerAddressError'));
+    });
+
+    document.querySelector('#cancelOrder').addEventListener('click', () => {
+      if (window.opener && !window.opener.closed) {
+        window.opener.postMessage({
+          type: 'mamoy-order-cancelled',
+          cart,
+          details: {
+            name: nameInput.value,
+            address: addressInput.value,
+            note: noteInput.value
+          }
+        }, '*');
+        window.opener.focus();
+        window.close();
+        return;
+      }
+      const menuUrl = new URL('index.html', window.location.href);
+      menuUrl.hash = 'menu';
+      menuUrl.searchParams.set('order', JSON.stringify(cart));
+      menuUrl.searchParams.set('customerName', nameInput.value);
+      menuUrl.searchParams.set('customerAddress', addressInput.value);
+      menuUrl.searchParams.set('orderNote', noteInput.value);
+      window.location.href = menuUrl.href;
+    });
+
+    confirmButton.addEventListener('click', () => {
+      if (cart.length === 0) return;
+      if (!validateRequiredDetails()) return;
+      confirmed = true;
+      canSend = false;
+      reviewMessage.textContent = '';
+      renderOrder();
+      let secondsRemaining = 5;
+      const updateCountdown = () => {
+        if (!confirmed) return;
+        if (secondsRemaining === 0) {
+          canSend = true;
+          confirmedNotice.textContent = 'Pesanan sudah dikonfirmasi dan siap dikirim lewat WhatsApp.';
+          renderOrder();
+          return;
+        }
+        confirmedNotice.textContent = `Harap cek kembali pesanan Anda terlebih dahulu. Tombol kirim tersedia dalam ${secondsRemaining} detik.`;
+        secondsRemaining -= 1;
+        confirmationTimer = window.setTimeout(updateCountdown, 1000);
+      };
+      updateCountdown();
+    });
+
+    editButton.addEventListener('click', () => {
+      window.clearTimeout(confirmationTimer);
+      confirmed = false;
+      canSend = false;
+      renderOrder();
+    });
+
+    sendButton.addEventListener('click', () => {
+      if (!confirmed || !canSend || cart.length === 0 || !validateRequiredDetails()) return;
+      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const customerName = nameInput.value.trim().replace(/\s+/g, ' ');
+      const customerAddress = addressInput.value.trim();
+      const orderNote = noteInput.value.trim();
+      const message = [
+        'Halo MamoyCemil, saya mau pesan:',
+        ...cart.map((item) => `- ${item.name}${item.variant ? ` (${item.variant})` : ''}${item.spice ? ` (${item.spice})` : ''} x${item.quantity} = ${formatRupiah(item.price * item.quantity)}`),
+        `Total: ${formatRupiah(total)}`,
+        customerName ? `Nama: ${customerName}` : '',
+        customerAddress ? `Alamat: ${customerAddress}` : '',
+        orderNote ? `Catatan: ${orderNote}` : ''
+      ].filter(Boolean).join('\n');
+      window.open(`https://wa.me/6289508175777?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+    });
+
+    renderOrder();
+  </script>
+</body>
+</html>

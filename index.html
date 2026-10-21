@@ -12,10 +12,9 @@
 </head>
 <body>
 
-  <header class="hero">
+  <header class="hero home-hero">
     <nav class="nav">
       <a href="#menu">Menu</a>
-      <a href="pesan.html">Pesan</a>
       <a href="#tentang">Tentang</a>
       <a href="#kontak">Kontak</a>
     </nav>
@@ -24,66 +23,120 @@
     <span class="sticker s3" aria-hidden="true">🌯</span>
     <h1>Mamoy<span>Cemil</span></h1>
     <p>Cemilan imut buat nemenin harimu. Enak, bikin kenyang, harganya ramah di kantong.</p>
-    <a class="btn" href="pesan.html">
-      Isi Pesanan
-    </a>
   </header>
 
   <main>
-    <section id="menu" class="wrap">
-      <h2>Menu Mamoy</h2>
-      <p class="sub">Mulai dari Rp1.000 aja!</p>
+      <section id="menu" class="wrap order-menu">
+        <h2>Menu Mamoy</h2>
+        <p class="sub">Pilih jumlah, varian, dan tingkat pedas sebelum menambahkan ke pesanan.</p>
 
-      <div class="grid">
-        <article class="card">
-          <img src="asset/burger.png" alt="Beef Burger" />
-          <div class="info">
-            <h3>Beef Burger</h3>
-          </div>
-          <span class="price">Rp10rb</span>
-        </article>
+        <div class="order-grid">
+          <article class="card product-card" data-name="Beef Burger" data-price="10000">
+            <img src="asset/burger.png" alt="Beef Burger" />
+            <div class="info">
+              <h3>Beef Burger</h3>
+              <p class="product-price">Rp10.000</p>
+              <label class="product-option">Tingkat pedas
+                <select class="product-spice" aria-label="Tingkat pedas Beef Burger">
+                  <option value="Tidak pedas">Tidak pedas</option>
+                  <option value="Pedas">Pedas</option>
+                </select>
+              </label>
+              <div class="product-quantity-control" role="group" aria-label="Jumlah Beef Burger">
+                <span>Jumlah</span>
+                <div class="quantity-stepper">
+                  <button class="quantity-button" type="button" data-step="-1" aria-label="Kurangi jumlah Beef Burger">−</button>
+                  <output class="quantity-value">1</output>
+                  <button class="quantity-button" type="button" data-step="1" aria-label="Tambah jumlah Beef Burger">+</button>
+                </div>
+              </div>
+              <button class="add-to-cart" type="button">Tambah ke pesanan</button>
+            </div>
+          </article>
 
-        <article class="card">
-          <img src="asset/stick.png" alt="Sosis Stick" />
-          <div class="info">
-            <h3>Sosis Stick</h3>
-            <p>per pcs</p>
-          </div>
-          <span class="price">Rp1rb</span>
-        </article>
+          <article class="card product-card" data-name="Sosis Stick" data-price="1000">
+            <img src="asset/stick.png" alt="Sosis Stick" />
+            <div class="info">
+              <h3>Sosis Stick</h3>
+              <p class="product-price">Rp1.000 per pcs</p>
+              <label class="product-option">Tingkat pedas
+                <select class="product-spice" aria-label="Tingkat pedas Sosis Stick">
+                  <option value="Tidak pedas">Tidak pedas</option>
+                  <option value="Pedas">Pedas</option>
+                </select>
+              </label>
+              <div class="product-quantity-control" role="group" aria-label="Jumlah Sosis Stick">
+                <span>Jumlah</span>
+                <div class="quantity-stepper">
+                  <button class="quantity-button" type="button" data-step="-1" aria-label="Kurangi jumlah Sosis Stick">−</button>
+                  <output class="quantity-value">1</output>
+                  <button class="quantity-button" type="button" data-step="1" aria-label="Tambah jumlah Sosis Stick">+</button>
+                </div>
+              </div>
+              <button class="add-to-cart" type="button">Tambah ke pesanan</button>
+            </div>
+          </article>
 
-        <article class="card">
-          <img src="asset/kebab.png" alt="Kebab" />
-          <div class="info">
-            <h3>Kebab</h3>
-            <ul>
-              <li>Kecil <b>Rp10rb</b></li>
-              <li>Sedang <b>Rp15rb</b></li>
-            </ul>
-          </div>
-        </article>
+          <article class="card product-card" data-name="Kebab">
+            <img src="asset/kebab.png" alt="Kebab" />
+            <div class="info">
+              <h3>Kebab</h3>
+              <label class="product-option">Ukuran
+                <select class="product-variant" aria-label="Ukuran Kebab">
+                  <option value="Kecil" data-price="10000">Kecil - Rp10.000</option>
+                  <option value="Sedang" data-price="15000">Sedang - Rp15.000</option>
+                </select>
+              </label>
+              <label class="product-option">Tingkat pedas
+                <select class="product-spice" aria-label="Tingkat pedas Kebab">
+                  <option value="Tidak pedas">Tidak pedas</option>
+                  <option value="Pedas">Pedas</option>
+                </select>
+              </label>
+              <div class="product-quantity-control" role="group" aria-label="Jumlah Kebab">
+                <span>Jumlah</span>
+                <div class="quantity-stepper">
+                  <button class="quantity-button" type="button" data-step="-1" aria-label="Kurangi jumlah Kebab">−</button>
+                  <output class="quantity-value">1</output>
+                  <button class="quantity-button" type="button" data-step="1" aria-label="Tambah jumlah Kebab">+</button>
+                </div>
+              </div>
+              <button class="add-to-cart" type="button">Tambah ke pesanan</button>
+            </div>
+          </article>
 
-        <article class="card">
-          <img src="asset/corndog.png" alt="Corndog" />
-          <div class="info">
-            <h3>Corndog</h3>
-            <ul>
-              <li>Sosis <b>Rp5rb</b></li>
-              <li>Manis <b>Rp5rb</b></li>
-            </ul>
-            <p>Rasa manis: coklat, strawberry, tiramisu, matcha</p>
-          </div>
-        </article>
-
-        <article class="card soon">
-          <img src="asset/Coming%20soon.png" alt="Menu baru segera hadir" />
-          <div class="info">
-            <h3>Segera Hadir</h3>
-            <p>Menu baru lagi disiapkan</p>
-          </div>
-        </article>
-      </div>
-    </section>
+          <article class="card product-card" data-name="Corndog">
+            <img src="asset/corndog.png" alt="Corndog" />
+            <div class="info">
+              <h3>Corndog</h3>
+              <label class="product-option">Varian
+                <select class="product-variant" aria-label="Varian Corndog">
+                  <option value="Sosis" data-price="5000">Sosis - Rp5.000</option>
+                  <option value="Manis coklat" data-price="5000">Manis - Coklat</option>
+                  <option value="Manis strawberry" data-price="5000">Manis - Strawberry</option>
+                  <option value="Manis tiramisu" data-price="5000">Manis - Tiramisu</option>
+                  <option value="Manis matcha" data-price="5000">Manis - Matcha</option>
+                </select>
+              </label>
+              <label class="product-option corndog-spice-option">Tingkat pedas
+                <select class="product-spice" aria-label="Tingkat pedas Corndog">
+                  <option value="Tidak pedas">Tidak pedas</option>
+                  <option value="Pedas">Pedas</option>
+                </select>
+              </label>
+              <div class="product-quantity-control" role="group" aria-label="Jumlah Corndog">
+                <span>Jumlah</span>
+                <div class="quantity-stepper">
+                  <button class="quantity-button" type="button" data-step="-1" aria-label="Kurangi jumlah Corndog">−</button>
+                  <output class="quantity-value">1</output>
+                  <button class="quantity-button" type="button" data-step="1" aria-label="Tambah jumlah Corndog">+</button>
+                </div>
+              </div>
+              <button class="add-to-cart" type="button">Tambah ke pesanan</button>
+            </div>
+          </article>
+        </div>
+      </section>
 
     <section id="tentang" class="wrap about">
       <h2>Kenalan Yuk</h2>
@@ -97,10 +150,6 @@
         <img src="asset/alamat.png" alt="Alamat" />
         <span>Jl. Mawar Merah 1 Gg. 1 No.107 RT.4/RW.8, Malaka Jaya, Kec. Duren Sawit, Kota Jakarta Timur, DKI Jakarta 13460</span>
       </a>
-      <a class="contact" href="https://wa.me/6289508175777" target="_blank" rel="noopener noreferrer">
-        <img src="asset/wa.png" alt="WhatsApp" />
-        <span>0895-0817-5777</span>
-      </a>
     </section>
   </main>
 
@@ -112,6 +161,133 @@
     </a>
   </footer>
 
-  <a class="fab" href="pesan.html">Pesan</a>
+  <button class="fab cart-fab" id="showCart" type="button" aria-label="Lihat pesanan, 0 item">
+    Lihat Pesanan <span class="cart-badge" id="cartCount" aria-hidden="true">0</span>
+  </button>
+
+  <script>
+    const cartCount = document.querySelector('#cartCount');
+    const cart = [];
+    const showCartButton = document.querySelector('#showCart');
+    const products = [...document.querySelectorAll('.product-card')];
+    const customerDetails = { name: '', address: '', note: '' };
+
+    function restoreCartFromUrl() {
+      const currentUrl = new URL(window.location.href);
+      const savedOrder = currentUrl.searchParams.get('order');
+      customerDetails.name = currentUrl.searchParams.get('customerName') || '';
+      customerDetails.address = currentUrl.searchParams.get('customerAddress') || '';
+      customerDetails.note = currentUrl.searchParams.get('orderNote') || '';
+      if (!savedOrder && !currentUrl.searchParams.has('customerName') && !currentUrl.searchParams.has('customerAddress') && !currentUrl.searchParams.has('orderNote')) return;
+
+      try {
+        const requestedItems = JSON.parse(savedOrder || '[]');
+        if (!Array.isArray(requestedItems)) return;
+        requestedItems.forEach((item) => {
+          const product = products.find((candidate) => candidate.dataset.name === item.name);
+          if (!product) return;
+          const variantSelect = product.querySelector('.product-variant');
+          const option = variantSelect ? [...variantSelect.options].find((candidate) => candidate.value === item.variant) : null;
+          if (variantSelect && !option) return;
+          const spice = item.spice || '';
+          const sweetCorndog = item.name === 'Corndog' && item.variant?.startsWith('Manis ');
+          if (sweetCorndog ? spice !== '' : !['Pedas', 'Tidak pedas'].includes(spice)) return;
+          const quantity = Number.parseInt(item.quantity, 10);
+          if (!Number.isInteger(quantity) || quantity < 1 || quantity > 99) return;
+
+          cart.push({
+            name: item.name,
+            variant: item.variant || '',
+            spice,
+            price: Number(option?.dataset.price || product.dataset.price || 0),
+            quantity
+          });
+        });
+      } catch {
+        cart.length = 0;
+      } finally {
+        currentUrl.searchParams.delete('order');
+        currentUrl.searchParams.delete('customerName');
+        currentUrl.searchParams.delete('customerAddress');
+        currentUrl.searchParams.delete('orderNote');
+        history.replaceState(null, '', `${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}`);
+      }
+    }
+
+    function renderCartCount() {
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCount.textContent = count;
+      showCartButton.setAttribute('aria-label', `Lihat pesanan, ${count} item`);
+      showCartButton.hidden = count === 0;
+    }
+
+    function showCartAnimation() {
+      showCartButton.classList.remove('cart-pulse');
+      cartCount.classList.remove('badge-pulse');
+      void showCartButton.offsetWidth;
+      showCartButton.classList.add('cart-pulse');
+      cartCount.classList.add('badge-pulse');
+    }
+
+    document.querySelectorAll('.product-card').forEach((product) => {
+      const quantityOutput = product.querySelector('.quantity-value');
+      const variantSelect = product.querySelector('.product-variant');
+      const spiceSelect = product.querySelector('.product-spice');
+      const spiceOption = spiceSelect.closest('.product-option');
+      const updateSpiceOption = () => {
+        const isSweetCorndog = product.dataset.name === 'Corndog' && variantSelect?.value.startsWith('Manis ');
+        spiceOption.hidden = Boolean(isSweetCorndog);
+        if (isSweetCorndog) spiceSelect.value = 'Tidak pedas';
+      };
+      variantSelect?.addEventListener('change', updateSpiceOption);
+      updateSpiceOption();
+
+      const quantityButtons = product.querySelectorAll('.quantity-button');
+      quantityButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const quantity = Number(quantityOutput.textContent) || 1;
+          quantityOutput.textContent = Math.max(1, quantity + Number(button.dataset.step));
+        });
+      });
+
+      product.querySelector('.add-to-cart').addEventListener('click', () => {
+        const variant = product.querySelector('.product-variant');
+        const option = variant?.selectedOptions[0];
+        const item = {
+          name: product.dataset.name,
+          variant: option?.value || '',
+          spice: spiceOption.hidden ? '' : spiceSelect.value,
+          price: Number(option?.dataset.price || product.dataset.price || 0),
+          quantity: Number(quantityOutput.textContent) || 1
+        };
+        cart.push(item);
+        quantityOutput.textContent = '1';
+        renderCartCount();
+        showCartAnimation();
+      });
+    });
+
+    showCartButton.addEventListener('click', () => {
+      if (cart.length === 0) return;
+      const reviewUrl = new URL('pesanan.html', window.location.href);
+      reviewUrl.searchParams.set('order', JSON.stringify(cart));
+      reviewUrl.searchParams.set('customerName', customerDetails.name);
+      reviewUrl.searchParams.set('customerAddress', customerDetails.address);
+      reviewUrl.searchParams.set('orderNote', customerDetails.note);
+      window.open(reviewUrl.href, '_blank');
+    });
+
+    window.addEventListener('message', (event) => {
+      if (event.data?.type !== 'mamoy-order-cancelled') return;
+      cart.splice(0, cart.length, ...event.data.cart);
+      customerDetails.name = event.data.details.name;
+      customerDetails.address = event.data.details.address;
+      customerDetails.note = event.data.details.note;
+      renderCartCount();
+    });
+
+    restoreCartFromUrl();
+    renderCartCount();
+  </script>
 </body>
 </html>
