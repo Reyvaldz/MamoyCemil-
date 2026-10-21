@@ -1,185 +1,204 @@
-body {
-  background-color: #d7b74f;
-  margin: 0;
-  padding: 0;
-  font-family: 'Nunito', sans-serif;
-  position: relative; /* penting supaya ::before mengikuti body */
-  z-index: 0;
+:root {
+  --kuning: #f2b632;
+  --krem: #fff4d6;
+  --cabai: #d63a22;
+  --cokelat: #4a2c1a;
+  --oranye: #f28c28;
+  --putih: #fffdf7;
+  --font-judul: 'Finger Paint', 'Nunito', sans-serif;
+  --font-isi: 'Nunito', sans-serif;
 }
 
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+
+body {
+  margin: 0;
+  font-family: var(--font-isi);
+  color: var(--cokelat);
+  background-color: var(--kuning);
+  line-height: 1.6;
+}
+
+/* Pola latar, tetap pakai asset/bg.jpg */
 body::before {
   content: "";
-  position: fixed; /* biar full screen dan tidak ikut scroll */
+  position: fixed;
   inset: 0;
-  background-image: url(asset/bg.jpg);
-  background-repeat: repeat;
+  background: url(asset/bg.jpg) repeat;
   background-size: 250px;
-  opacity: 0.3; /* atur opacity di sini */
-  z-index: -1; /* di belakang semua elemen */
+  opacity: 0.25;
+  z-index: -1;
 }
 
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+a:focus-visible, .btn:focus-visible { outline: 3px solid var(--cabai); outline-offset: 3px; }
+
+/* Topbar */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  background: var(--cabai);
+  color: var(--putih);
+  border-bottom: 4px solid var(--cokelat);
+}
+.brand {
+  font-family: var(--font-judul);
+  font-size: 20px;
+  text-decoration: none;
+}
+.topbar nav { display: flex; gap: 18px; }
+.topbar nav a { text-decoration: none; font-weight: 800; font-size: 15px; }
+.topbar nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+/* Wadah utama */
 .container {
   max-width: 1000px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: #ffefba;
-  border-radius: 20px;
-  box-shadow: 0 0 20px black;
+  margin: 32px auto;
+  padding: 28px;
+  background: var(--krem);
+  border: 4px solid var(--cokelat);
+  border-radius: 24px;
+  box-shadow: 8px 8px 0 var(--cokelat);
 }
+.container section + section { margin-top: 44px; }
 
-h1, h2 {
-  color: #5c4033;
-  font-family: 'Nunito', sans-serif;
-  font-weight: 900;
-}
-
-img {
-  max-width: 100%;
-  border-radius: 10px;
-  display: block;
+h1, h2, h3 { font-family: var(--font-judul); font-weight: 400; margin: 0; }
+h2 {
+  font-size: 28px;
+  margin-bottom: 18px;
+  display: inline-block;
+  padding-bottom: 4px;
+  border-bottom: 5px solid var(--cabai);
 }
 
 /* Hero */
 .hero {
   text-align: center;
-  padding: 40px 20px;
-  background-color: #ffb347;
-  box-shadow: 0 0 12px black;
-  border-radius: 10px;
+  padding: 48px 20px;
+  background: var(--oranye);
+  border: 4px solid var(--cokelat);
+  border-radius: 18px;
 }
+.hero h1 { font-size: clamp(32px, 7vw, 56px); line-height: 1.15; color: var(--putih); text-shadow: 3px 3px 0 var(--cokelat); }
+.hero p { font-size: 20px; font-weight: 800; margin: 14px 0 24px; }
 
-.hero h1 {
-  font-size: 50px;
-  margin: 10px;
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  background: var(--putih);
+  color: var(--cokelat);
+  font-weight: 900;
+  text-decoration: none;
+  border: 3px solid var(--cokelat);
+  border-radius: 999px;
+  box-shadow: 4px 4px 0 var(--cokelat);
+  transition: transform .15s, box-shadow .15s;
 }
-
-.hero p {
-  font-size: 20px;
-  margin-bottom: 20px;
-  color: #5c4033;
-}
-
-/* About */
-.about p {
-  font-size: 17px;
-  line-height: 1.6;
-  color: #5c4033;
-}
+.btn img { width: 24px; height: 24px; }
+.btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--cokelat); }
 
 /* Menu */
-.menu h2 {
-  text-align: start;
-}
-
-.foto-grid {
+.menu-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 25px;
-  margin-top: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
 }
-
-.menu-item {
-  text-align: center;
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--putih);
+  border: 3px solid var(--cokelat);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 4px 4px 0 var(--cokelat);
 }
+.card img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-bottom: 3px solid var(--cokelat); }
+.card-body { padding: 14px 16px 18px; }
+.card h3 { font-size: 19px; margin-bottom: 6px; }
+.price { margin: 0; font-size: 20px; font-weight: 900; color: var(--cabai); }
+.price span { font-size: 14px; font-weight: 600; color: var(--cokelat); }
+.note { margin: 8px 0 0; font-size: 14px; }
 
-.menu-item img {
-  width: 300px;
-  max-width: 300%;
-  border-radius: 10px;
-  box-shadow: 0 0 10px black;
-  margin: 0 auto;
+.variants { list-style: none; margin: 0; padding: 0; }
+.variants li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 0;
+  border-bottom: 2px dashed #d9bd7a;
 }
+.variants li:last-child { border-bottom: 0; }
+.variants b { color: var(--cabai); }
 
-.menu-item p {
-  margin-top: 5px;
-  font-weight: 500;
-  color: #5c4033;
-  font-family: 'Nunito', sans-serif;
-}
+.card.soon { background: transparent; border-style: dashed; box-shadow: none; }
+.card.soon img { opacity: .75; }
 
-/* Testimoni */
+/* Tentang, testimoni */
+.about p { max-width: 70ch; font-size: 17px; margin: 0; }
+
 .testimoni blockquote {
-  max-width: 1000px;
-  margin: 10px auto;
-  padding: 20px;
-  background-color: #ffb347;
-  border-radius: 10px;
-  box-shadow: 0 0 10px black;
+  margin: 0;
+  padding: 20px 24px;
+  background: var(--kuning);
+  border: 3px solid var(--cokelat);
+  border-radius: 16px;
+  font-size: 20px;
+  font-weight: 800;
   font-style: italic;
-  text-shadow: 1px 1px 2px #00000030;
 }
 
 /* Kontak */
-.kontak a,
-.kontak p {
-  color: #8d4c30;
+.kontak-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: fit-content;
+  max-width: 100%;
+  margin-bottom: 10px;
+  padding: 12px 16px;
+  background: var(--putih);
+  border: 3px solid var(--cokelat);
+  border-radius: 14px;
+  font-weight: 800;
   text-decoration: none;
-  font-weight: bold;
-  font-size: 15px;
-  font-family: 'Nunito', sans-serif;
 }
+.kontak-item:hover { background: var(--kuning); }
+.kontak-item img { width: 24px; height: 24px; flex-shrink: 0; }
 
 /* Footer */
-.footer {
-  text-align: center;
-  font-size: 14px;
-  color: #8d4c30;
-  font-family: 'Nunito', sans-serif;
-  text-decoration: none;
-  font-weight: bold;
+.footer { text-align: center; padding: 0 16px 36px; font-weight: 800; }
+.footer p { margin: 4px 0; }
+.footer a { display: inline-block; margin-top: 8px; }
+.footer img { width: 34px; height: 34px; }
+
+/* Responsif */
+@media (max-width: 800px) {
+  .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
 }
-.footer a {
-  display: flex;
-  justify-content: center; 
-  align-items: center; 
-  margin-top: 10px;
+@media (max-width: 520px) {
+  .topbar { padding: 8px 14px; }
+  .topbar nav { gap: 12px; }
+  .container { margin: 16px 10px; padding: 16px; box-shadow: 5px 5px 0 var(--cokelat); }
+  .hero { padding: 32px 14px; }
+  .hero p { font-size: 17px; }
+  h2 { font-size: 23px; }
+  .card h3 { font-size: 16px; }
+  .price { font-size: 17px; }
+  .card-body { padding: 10px 12px 14px; }
+  .variants li, .note { font-size: 13px; }
 }
 
-/* Responsive */
-@media screen and (max-width: 768px) {
-  .container {
-    margin: 20px 10px;
-    padding: 15px;
-  }
-
-  .hero h1 {
-    font-size: 32px;
-  }
-
-  .hero p {
-    font-size: 16px;
-  }
-
-  .about p {
-    font-size: 15px;
-  }
-
-  .foto-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-
-  .menu-item img {
-    width: 150px;
-    max-width: 150%;
-    margin: 0 auto;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-  }
-
-  .menu-item p {
-    font-size: 14px;
-  }
-
-  .kontak p,
-  .kontak a {
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    flex-wrap: wrap;
-  }
-
-  iframe {
-    height: 250px;
-  }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn { transition: none; }
 }

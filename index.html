@@ -3,88 +3,118 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Warung MamoyCemil</title>
+  <title>Warung MamoyCemil – Cemilan Enak, Harga Bersahabat</title>
+  <meta name="description" content="Warung MamoyCemil di Duren Sawit, Jakarta Timur. Burger, kebab, corndog, dan sosis stick mulai dari Rp1.000." />
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&family=Finger+Paint&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Finger+Paint&family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet" />
 </head>
 
 <body>
-  <div class="container">
+  <header class="topbar">
+    <a class="brand" href="#atas">MamoyCemil</a>
+    <nav>
+      <a href="#menu">Menu</a>
+      <a href="#tentang">Tentang</a>
+      <a href="#kontak">Kontak</a>
+    </nav>
+  </header>
 
-    <div class="hero">
-      <h1>Selamat Datang di Warung MamoyCemil</h1>
-      <p>Warung Makanan Lezat, dengan Harga Bersahabat</p>
-    </div>
+  <main class="container" id="atas">
 
-    <div class="about" id="about">
-      <h2>Tentang Kami</h2>
-      <p><b>MamoyCemil</b> adalah warung kecil yang kami dirikan dengan cinta dan semangat untuk menyajikan cemilan yang enak dan terjangkau. Kami ingin menjadi tempat andalan buat kamu yang suka nyemil, ngobrol santai, atau sekadar cari camilan buat nemenin hari.</p>
-    </div>
+    <section class="hero">
+      <h1>Warung MamoyCemil</h1>
+      <p>Cemilan enak, kenyang, dan harga bersahabat.</p>
+      <a class="btn" href="https://wa.me/6289508175777?text=Halo%20MamoyCemil%2C%20saya%20mau%20pesan" target="_blank" rel="noopener noreferrer">
+        <img src="asset/wa.png" alt="" /> Pesan lewat WhatsApp
+      </a>
+    </section>
 
-    <div class="menu">
+    <section id="menu">
       <h2>Menu</h2>
-      <div class="foto-grid">
-        <div class="menu-item">
-          <img src="asset/burger.png" alt="Burger" />
-              <p>Beef Burger  <br> Rp10.000</p>
+      <div class="menu-grid">
 
-        </div>
-        <div class="menu-item">
-          <img src="asset/stick.png" alt="Coming soon" />
-          <p>Sosis Stick <br> Rp.1.000 <br>(1 pcs)</p>
-        </div>
+        <article class="card">
+          <img src="asset/burger.png" alt="Beef Burger" />
+          <div class="card-body">
+            <h3>Beef Burger</h3>
+            <p class="price">Rp10.000</p>
+          </div>
+        </article>
 
-        <div class="menu-item">
+        <article class="card">
+          <img src="asset/stick.png" alt="Sosis Stick" />
+          <div class="card-body">
+            <h3>Sosis Stick</h3>
+            <p class="price">Rp1.000 <span>/ pcs</span></p>
+          </div>
+        </article>
+
+        <article class="card">
           <img src="asset/kebab.png" alt="Kebab" />
-          <p>Kebab (kecil) <br> Rp10.000</p>
-          <p>Kebab (sedang) <br> Rp15.000</p>
-        </div>
-        <div class="menu-item">
+          <div class="card-body">
+            <h3>Kebab</h3>
+            <ul class="variants">
+              <li><span>Kecil</span> <b>Rp10.000</b></li>
+              <li><span>Sedang</span> <b>Rp15.000</b></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="card">
           <img src="asset/corndog.png" alt="Corndog" />
-          </p>
-          <p>Corndog Manis <br> (coklat,strawberry <br> tiramisu,macha) <br> Rp5.000
-          <p>Corndog Sosis <br> Rp5.000</p>
-        </div>
-        <div class="menu-item">
-          <img src="asset/Coming soon.png" alt="Coming soon" />
-          <p>Coming Soon</p>
-        </div>
+          <div class="card-body">
+            <h3>Corndog</h3>
+            <ul class="variants">
+              <li><span>Sosis</span> <b>Rp5.000</b></li>
+              <li><span>Manis</span> <b>Rp5.000</b></li>
+            </ul>
+            <p class="note">Rasa manis: coklat, strawberry, tiramisu, matcha</p>
+          </div>
+        </article>
+
+        <article class="card soon">
+          <img src="asset/Coming%20soon.png" alt="Menu baru segera hadir" />
+          <div class="card-body">
+            <h3>Segera Hadir</h3>
+            <p class="note">Menu baru lagi disiapkan</p>
+          </div>
+        </article>
+
       </div>
-    </div>
+    </section>
 
-    <div class="testimoni">
-      <h2>Testimoni</h2>
-      <blockquote>
-        "Kebabnya bikin kenyang"
-      </blockquote>
-    </div>
+    <section id="tentang" class="about">
+      <h2>Tentang Kami</h2>
+      <p><b>MamoyCemil</b> adalah warung kecil yang kami dirikan dengan cinta dan semangat untuk menyajikan cemilan yang enak dan terjangkau. Kami ingin jadi tempat andalan buat kamu yang suka nyemil, ngobrol santai, atau sekadar cari camilan buat nemenin hari.</p>
+    </section>
 
-    <div class="kontak">
-      <h2>Kontak & Lokasi</h2>
-      <p>
-        <img src="asset/alamat.png" alt="Alamat" style="width: 20px; vertical-align: middle; margin-right: 8px;" />
-        <a href="https://share.google/yXczIwFbtDUoAU47q" target="_blank" rel="noopener noreferrer">
-          Jl. Mawar Merah 1 Gg. 1 No.107 RT.4/RW.8, Malaka Jaya, Kec. Duren Sawit, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13460
-        </a>
-      </p>
-      <p>
-        <img src="asset/wa.png" alt="WhatsApp" style="width: 20px; vertical-align: middle; margin-right: 8px;"/> 
-        <a href="https://wa.me/6289508175777" target="_blank" rel="noopener noreferrer">0895-0817-5777</a>
-      </p>
-    
-    </div>
+    <section class="testimoni">
+      <h2>Kata Mereka</h2>
+      <blockquote>“Kebabnya bikin kenyang.”</blockquote>
+    </section>
 
-    <div class="footer">
-      <p><b>&copy; Valendra</b></p>
-      <p>Web ini masih dalam pengembangan</p>
-      <p>kalau ada saran mengenai web ini bisa ke <br>
-        <p>
-        <a href="https://wa.me/6289513077234" target="_blank" rel="noopener noreferrer"><img src="asset/wa.png" alt="WhatsApp" style="width: 30px; vertical-align: middle; margin-right: 8px;"/></a>
-      </p>
-    </div>
+    <section id="kontak" class="kontak">
+      <h2>Kontak &amp; Lokasi</h2>
+      <a class="kontak-item" href="https://share.google/yXczIwFbtDUoAU47q" target="_blank" rel="noopener noreferrer">
+        <img src="asset/alamat.png" alt="Alamat" />
+        <span>Jl. Mawar Merah 1 Gg. 1 No.107 RT.4/RW.8, Malaka Jaya, Kec. Duren Sawit, Kota Jakarta Timur, DKI Jakarta 13460</span>
+      </a>
+      <a class="kontak-item" href="https://wa.me/6289508175777" target="_blank" rel="noopener noreferrer">
+        <img src="asset/wa.png" alt="WhatsApp" />
+        <span>0895-0817-5777</span>
+      </a>
+    </section>
 
-  </div>
+  </main>
+
+  <footer class="footer">
+    <p><b>&copy; Valendra</b></p>
+    <p>Web ini masih dalam pengembangan. Ada saran? Kirim lewat WhatsApp:</p>
+    <a href="https://wa.me/6289513077234" target="_blank" rel="noopener noreferrer" aria-label="Kirim saran lewat WhatsApp">
+      <img src="asset/wa.png" alt="WhatsApp" />
+    </a>
+  </footer>
 </body>
 </html>
