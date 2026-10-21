@@ -218,6 +218,7 @@
       const count = cart.reduce((sum, item) => sum + item.quantity, 0);
       cartCount.textContent = count;
       showCartButton.setAttribute('aria-label', `Lihat pesanan, ${count} item`);
+      showCartButton.hidden = count === 0;
     }
 
     function showCartAnimation() {
