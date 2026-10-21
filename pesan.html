@@ -17,20 +17,21 @@
     .order-list { display: grid; gap: 12px; }
     .order-item {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 150px 110px;
+      grid-template-columns: minmax(0, 1fr) minmax(150px, 190px) 164px;
       align-items: center;
-      gap: 16px;
-      padding: 14px 16px;
+      gap: 12px;
+      padding: 14px;
       background: var(--putih);
       border: 2px solid var(--pink);
       border-radius: 12px;
     }
     .item-name { font-family: var(--judul); font-size: 20px; font-weight: 800; line-height: 1.2; }
     .item-price { display: block; margin-top: 3px; font-size: 14px; }
-    .order-item label { display: grid; gap: 4px; font-size: 13px; font-weight: 900; }
-    .order-item select, .order-item input, .details input, .details textarea {
+    .item-subtotal { display: block; margin-top: 5px; color: var(--pink-tua); font-size: 14px; font-weight: 900; }
+    .variant-field, .quantity-control { display: grid; gap: 5px; font-size: 13px; font-weight: 900; }
+    .variant-field select, .details input, .details textarea {
       width: 100%;
-      min-height: 42px;
+      min-height: 46px;
       padding: 8px 10px;
       color: var(--cokelat);
       background: #fff;
@@ -38,7 +39,26 @@
       border-radius: 8px;
       font: inherit;
     }
-    .order-item input { text-align: center; }
+    .quantity-stepper { display: grid; grid-template-columns: 48px minmax(36px, 1fr) 48px; align-items: center; gap: 5px; }
+    .quantity-button {
+      min-width: 48px;
+      min-height: 48px;
+      padding: 0;
+      color: var(--cokelat);
+      background: var(--butter);
+      border: 2px solid var(--cokelat);
+      border-radius: 10px;
+      font: inherit;
+      font-size: 25px;
+      font-weight: 900;
+      line-height: 1;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .quantity-button:hover { background: var(--mint); }
+    .quantity-button:active { transform: translateY(1px); }
+    .quantity-value { min-width: 36px; text-align: center; font-size: 20px; font-weight: 900; font-variant-numeric: tabular-nums; }
+    .quantity-input { display: none; }
     .details { display: grid; gap: 14px; margin-top: 24px; }
     .details label { display: grid; gap: 5px; font-weight: 900; }
     .details textarea { min-height: 82px; resize: vertical; }
@@ -61,9 +81,10 @@
     .summary .btn { flex-shrink: 0; padding: 10px 16px; border: 0; cursor: pointer; font: inherit; font-weight: 900; }
     .back-link { display: inline-block; margin-top: 22px; color: var(--pink-tua); font-weight: 900; }
     @media (max-width: 560px) {
-      .order-item { grid-template-columns: minmax(0, 1fr) 105px; gap: 10px; padding: 12px; }
-      .order-item label:first-of-type { grid-column: 1 / -1; grid-row: 2; }
-      .order-item label:last-of-type { grid-column: 2; grid-row: 1; }
+      .order-item { grid-template-columns: minmax(0, 1fr) auto; gap: 10px; padding: 12px; }
+      .variant-field { grid-column: 1 / -1; }
+      .variant-spacer { display: none; }
+      .quantity-stepper { grid-template-columns: 48px minmax(32px, 1fr) 48px; }
       .summary { align-items: stretch; flex-direction: column; }
       .summary .btn { justify-content: center; }
     }
@@ -88,37 +109,69 @@
     <form id="orderForm">
       <div class="order-list">
         <article class="order-item" data-name="Beef Burger" data-price="10000">
-          <div><span class="item-name">Beef Burger</span><span class="item-price">Rp10.000</span></div>
-          <span aria-hidden="true"></span>
-          <label>Jumlah
-            <input class="quantity" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Jumlah Beef Burger" />
-          </label>
+          <div>
+            <span class="item-name">Beef Burger</span>
+            <span class="item-price">Rp10.000</span>
+            <output class="item-subtotal">Subtotal: Rp0</output>
+          </div>
+          <span class="variant-spacer" aria-hidden="true"></span>
+          <div class="quantity-control" role="group" aria-label="Jumlah Beef Burger">
+            <span>Jumlah</span>
+            <div class="quantity-stepper">
+              <button class="quantity-button" type="button" data-step="-1" aria-label="Kurangi Beef Burger">−</button>
+              <output class="quantity-value" aria-live="polite">0</output>
+              <button class="quantity-button" type="button" data-step="1" aria-label="Tambah Beef Burger">+</button>
+              <input class="quantity quantity-input" type="hidden" value="0" />
+            </div>
+          </div>
         </article>
 
         <article class="order-item" data-name="Sosis Stick" data-price="1000">
-          <div><span class="item-name">Sosis Stick</span><span class="item-price">Rp1.000 per pcs</span></div>
-          <span aria-hidden="true"></span>
-          <label>Jumlah
-            <input class="quantity" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Jumlah Sosis Stick" />
-          </label>
+          <div>
+            <span class="item-name">Sosis Stick</span>
+            <span class="item-price">Rp1.000 per pcs</span>
+            <output class="item-subtotal">Subtotal: Rp0</output>
+          </div>
+          <span class="variant-spacer" aria-hidden="true"></span>
+          <div class="quantity-control" role="group" aria-label="Jumlah Sosis Stick">
+            <span>Jumlah</span>
+            <div class="quantity-stepper">
+              <button class="quantity-button" type="button" data-step="-1" aria-label="Kurangi Sosis Stick">−</button>
+              <output class="quantity-value" aria-live="polite">0</output>
+              <button class="quantity-button" type="button" data-step="1" aria-label="Tambah Sosis Stick">+</button>
+              <input class="quantity quantity-input" type="hidden" value="0" />
+            </div>
+          </div>
         </article>
 
         <article class="order-item" data-name="Kebab">
-          <div><span class="item-name">Kebab</span></div>
-          <label>Ukuran
+          <div>
+            <span class="item-name">Kebab</span>
+            <output class="item-subtotal">Subtotal: Rp0</output>
+          </div>
+          <label class="variant-field">Ukuran
             <select class="variant" aria-label="Ukuran Kebab">
               <option value="Kecil" data-price="10000">Kecil - Rp10.000</option>
               <option value="Sedang" data-price="15000">Sedang - Rp15.000</option>
             </select>
           </label>
-          <label>Jumlah
-            <input class="quantity" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Jumlah Kebab" />
-          </label>
+          <div class="quantity-control" role="group" aria-label="Jumlah Kebab">
+            <span>Jumlah</span>
+            <div class="quantity-stepper">
+              <button class="quantity-button" type="button" data-step="-1" aria-label="Kurangi Kebab">−</button>
+              <output class="quantity-value" aria-live="polite">0</output>
+              <button class="quantity-button" type="button" data-step="1" aria-label="Tambah Kebab">+</button>
+              <input class="quantity quantity-input" type="hidden" value="0" />
+            </div>
+          </div>
         </article>
 
         <article class="order-item" data-name="Corndog">
-          <div><span class="item-name">Corndog</span></div>
-          <label>Varian
+          <div>
+            <span class="item-name">Corndog</span>
+            <output class="item-subtotal">Subtotal: Rp0</output>
+          </div>
+          <label class="variant-field">Varian
             <select class="variant" aria-label="Varian Corndog">
               <option value="Sosis" data-price="5000">Sosis - Rp5.000</option>
               <option value="Manis coklat" data-price="5000">Manis - Coklat</option>
@@ -127,9 +180,15 @@
               <option value="Manis matcha" data-price="5000">Manis - Matcha</option>
             </select>
           </label>
-          <label>Jumlah
-            <input class="quantity" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Jumlah Corndog" />
-          </label>
+          <div class="quantity-control" role="group" aria-label="Jumlah Corndog">
+            <span>Jumlah</span>
+            <div class="quantity-stepper">
+              <button class="quantity-button" type="button" data-step="-1" aria-label="Kurangi Corndog">−</button>
+              <output class="quantity-value" aria-live="polite">0</output>
+              <button class="quantity-button" type="button" data-step="1" aria-label="Tambah Corndog">+</button>
+              <input class="quantity quantity-input" type="hidden" value="0" />
+            </div>
+          </div>
         </article>
       </div>
 
@@ -166,9 +225,11 @@
           const selectedOption = variant?.selectedOptions[0];
           const unitPrice = Number(selectedOption?.dataset.price || item.dataset.price || 0);
           const name = item.dataset.name + (selectedOption ? ` (${selectedOption.value})` : '');
-          return { name, quantity, unitPrice, subtotal: quantity * unitPrice };
+          const subtotal = quantity * unitPrice;
+          item.querySelector('.quantity-value').textContent = quantity;
+          item.querySelector('.item-subtotal').textContent = `Subtotal: ${formatRupiah(subtotal)}`;
+          return { name, quantity, unitPrice, subtotal };
         })
-        .filter((item) => item.quantity > 0);
     }
 
     function updateTotal() {
@@ -177,11 +238,20 @@
       formMessage.textContent = '';
     }
 
+    orderForm.addEventListener('click', (event) => {
+      const button = event.target.closest('.quantity-button');
+      if (!button) return;
+      const quantityInput = button.closest('.order-item').querySelector('.quantity');
+      const currentQuantity = Number.parseInt(quantityInput.value, 10) || 0;
+      quantityInput.value = Math.max(0, currentQuantity + Number(button.dataset.step));
+      updateTotal();
+    });
+
     orderForm.addEventListener('input', updateTotal);
     orderForm.addEventListener('change', updateTotal);
     orderForm.addEventListener('submit', (event) => {
       event.preventDefault();
-      const items = getOrderItems();
+      const items = getOrderItems().filter((item) => item.quantity > 0);
       if (items.length === 0) {
         formMessage.textContent = 'Pilih setidaknya satu menu terlebih dahulu.';
         return;
